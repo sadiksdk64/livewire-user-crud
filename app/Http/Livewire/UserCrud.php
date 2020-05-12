@@ -11,31 +11,25 @@ class UserCrud extends Component
     public $userId,$name,$email,$dob,$mobile,$country,$gender = 1;
     public $users;
 
+    public function mount()
+    {
+        $this->users = User::get(['name','id','gender','dob','email','mobile','country'])->toArray();
+    }
+
     public function updated($field)
     {
-        $this->validateOnly($field, [
-            'name' => 'required|min:6',
-            'email' => 'required|email',
-            'dob' => 'required|date',
-            'country' => 'required|string',
-            'gender' => 'required',
-        ]);
+        $this->validateOnly($field, $this->getValidation());
     }
 
     public function submit()
     {
-        $validatedData = $this->validate([
-            'name' => 'required|min:6',
-            'email' => 'required|email',
-            'dob' => 'required|date',
-            'country' => 'required|string',
-            'gender' => 'required',
-        ]);
+        $validatedData = $this->validate($this->getValidation());
 
-        User::create($validatedData);
+        $data = User::create($validatedData);
         $this->resetValues();
+       // $this->mount();
+        $this->users[] = $validatedData + ['id' => $data['id']];
         session()->flash('message', 'User successfully saved.');
-
     }
 
     public function resetValues()
@@ -62,20 +56,19 @@ class UserCrud extends Component
         $this->country = $user['country'];
         $this->gender = $user['gender'];
     }
-
+    public function gotoindex()
+    {
+        $this->route = 'index';
+    }
     public function updatemodel()
     {
-        $validatedData = $this->validate([
-            'name' => 'required|min:6',
-            'email' => 'required|email',
-            'dob' => 'required|date',
-            'country' => 'required|string',
-            'gender' => 'required',
-        ]);
+        $validatedData = $this->validate($this->getValidation());
 
-        User::UpdateOrCreate(['id' => $this->userId],$validatedData);
+        $data = User::UpdateOrCreate(['id' => $this->userId],$validatedData);
         $this->resetValues();
         $this->route = 'index';
+        $this->mount();
+     //   $this->users[] = $validatedData + ['id' => $data['id']];
         session()->flash('message', 'User successfully updated.');
 
     }
@@ -87,12 +80,24 @@ class UserCrud extends Component
         $this->addError('delete', 'User Deleted Successfully.');
     }
 
+    public function getValidation()
+    {
+        return [
+            'name' => 'required|min:6',
+            'email' => 'required|email',
+            'mobile' => 'numeric',
+            'dob' => 'required|date',
+            'country' => 'required|string',
+            'gender' => 'required',
+        ];
+    }
+
     public function render()
     {
-        if($this->route == 'index')
-        {
-            $this->users = User::all()->toArray();
-        }
+        // if($this->route == 'index')
+        // {
+            $this->users = User::get()->toArray();
+       // }
         return view('livewire.user-crud');
     }
 }

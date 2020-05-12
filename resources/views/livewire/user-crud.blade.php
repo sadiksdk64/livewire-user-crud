@@ -6,8 +6,15 @@
         <span>{{ session('message') }}</span><br/>
     </div>
     @endif
+    
+
     <div class="card">
         <div class="card-body">
+            @if($route == 'edit')
+                <div class="col-sm-6 text-left">
+                    <a href="#" class="btn btn-dark" wire:click="gotoindex"><i class="fa fa-caret-left fa-fw"></i> Back</a>
+                </div>
+            @endif
             {{ Form::open(['url' => 'payment-accounts', 'method' => 'post','wire:submit.prevent' => 'submit']) }}
             <div class="row">
                 <div class="col-sm-6">
@@ -132,8 +139,8 @@
 										{{$user['mobile']}}
 									</td>
 									<td class="text-right">
-										<a href="#" wire:click="edit({{$user['id']}})" class="btn btn-warning waves-effect waves-light btn-sm" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Setting"><i class="fas fa-cog">Edit</i></a>
-										<a href="#" wire:click="delete({{$user['id']}})" class="btn btn-danger waves-effect waves-light btn-sm" style="display: inline-block;" data-toggle="tooltip" data-placement="top" title="Setting"><i class="fas fa-cog">Delete</i></a>
+										<a href="#" wire:click="edit({{$user['id']}})" class="btn btn-warning btn-sm" >Edit</a>
+										<a href="#" wire:click="delete({{$user['id']}})" class="btn btn-danger btn-sm" ><i class="fas fa-cog">Delete</i></a>
 									</td>
 								</tr>
 							@endforeach
