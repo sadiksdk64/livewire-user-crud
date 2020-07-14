@@ -8,7 +8,7 @@ use Livewire\Component;
 class UserCrud extends Component
 {
     public $route = 'index';
-    public $userId,$name,$email,$dob,$mobile,$country,$gender = 1;
+    public $userId,$name,$email,$dob,$mobile,$country,$gender = 0;
     public $users;
 
     public function mount()

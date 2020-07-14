@@ -66,10 +66,12 @@
                         <div class="col-md-6" >
                             <div class="row">
                             <div class="col-md-3" >
-                            {{Form::radio('gender', 0,$gender,['class' => 'form-control','wire:model' => 'gender'])}} Male
+                                <input type="radio" id="male" name="gender" value="0" wire:model="gender">
+                                <span>Male</span>
                             </div>
                             <div class="col-md-4" >
-                            {{Form::radio('gender', 1,$gender,['class' => 'form-control','wire:model' => 'gender'])}} FeMale
+                                <input type="radio" id="female" name="gender" value="1" wire:model="gender">
+                                <span>FeMale</span>
                             </div>
                             </div>
                             <div>
